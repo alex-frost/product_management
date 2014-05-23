@@ -23,7 +23,8 @@ describe LineItemsController do
   # This should return the minimal set of attributes required to create a valid
   # LineItem. As you add validations to LineItem, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { { "product" => "" } }
+  let(:valid_attributes) { {quantity: 2} }
+
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -46,21 +47,6 @@ describe LineItemsController do
     end
   end
 
-  describe "GET new" do
-    it "assigns a new line_item as @line_item" do
-      get :new, {}, valid_session
-      assigns(:line_item).should be_a_new(LineItem)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested line_item as @line_item" do
-      line_item = LineItem.create! valid_attributes
-      get :edit, {:id => line_item.to_param}, valid_session
-      assigns(:line_item).should eq(line_item)
-    end
-  end
-
   describe "POST create" do
     describe "with valid params" do
       it "creates a new LineItem" do
@@ -75,9 +61,9 @@ describe LineItemsController do
         assigns(:line_item).should be_persisted
       end
 
-      it "redirects to the created line_item" do
+      it "has status created" do
         post :create, {:line_item => valid_attributes}, valid_session
-        response.should redirect_to(LineItem.last)
+        expect(response.status).to eq(201)
       end
     end
 
@@ -85,15 +71,15 @@ describe LineItemsController do
       it "assigns a newly created but unsaved line_item as @line_item" do
         # Trigger the behavior that occurs when invalid params are submitted
         LineItem.any_instance.stub(:save).and_return(false)
-        post :create, {:line_item => { "product" => "invalid value" }}, valid_session
+        post :create, {:line_item => { "quantity" => "invalid value" }}, valid_session
         assigns(:line_item).should be_a_new(LineItem)
       end
 
-      it "re-renders the 'new' template" do
+      it "has status unprocessable_entity" do
         # Trigger the behavior that occurs when invalid params are submitted
         LineItem.any_instance.stub(:save).and_return(false)
-        post :create, {:line_item => { "product" => "invalid value" }}, valid_session
-        response.should render_template("new")
+        post :create, {:line_item => { "quantity" => "invalid value" }}, valid_session
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -106,8 +92,8 @@ describe LineItemsController do
         # specifies that the LineItem created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        LineItem.any_instance.should_receive(:update).with({ "product" => "" })
-        put :update, {:id => line_item.to_param, :line_item => { "product" => "" }}, valid_session
+        LineItem.any_instance.should_receive(:update).with({ "quantity" => "" })
+        put :update, {:id => line_item.to_param, :line_item => { "quantity" => "" }}, valid_session
       end
 
       it "assigns the requested line_item as @line_item" do
@@ -116,10 +102,10 @@ describe LineItemsController do
         assigns(:line_item).should eq(line_item)
       end
 
-      it "redirects to the line_item" do
+      it "has status 204" do
         line_item = LineItem.create! valid_attributes
         put :update, {:id => line_item.to_param, :line_item => valid_attributes}, valid_session
-        response.should redirect_to(line_item)
+        expect(response.status).to eq(204)
       end
     end
 
@@ -128,16 +114,16 @@ describe LineItemsController do
         line_item = LineItem.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         LineItem.any_instance.stub(:save).and_return(false)
-        put :update, {:id => line_item.to_param, :line_item => { "product" => "invalid value" }}, valid_session
+        put :update, {:id => line_item.to_param, :line_item => { "quantity" => "invalid value" }}, valid_session
         assigns(:line_item).should eq(line_item)
       end
 
-      it "re-renders the 'edit' template" do
+      it "has status unprocessable_entity" do
         line_item = LineItem.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         LineItem.any_instance.stub(:save).and_return(false)
-        put :update, {:id => line_item.to_param, :line_item => { "product" => "invalid value" }}, valid_session
-        response.should render_template("edit")
+        put :update, {:id => line_item.to_param, :line_item => { "name" => "invalid value" }}, valid_session
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -150,10 +136,10 @@ describe LineItemsController do
       }.to change(LineItem, :count).by(-1)
     end
 
-    it "redirects to the line_items list" do
+    it "has status 204" do
       line_item = LineItem.create! valid_attributes
       delete :destroy, {:id => line_item.to_param}, valid_session
-      response.should redirect_to(line_items_url)
+      expect(response.status).to eq(204)
     end
   end
 
