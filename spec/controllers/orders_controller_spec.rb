@@ -23,7 +23,7 @@ describe OrdersController do
   # This should return the minimal set of attributes required to create a valid
   # Order. As you add validations to Order, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { { "date" => "2014-05-23" } }
+  let(:valid_attributes) { { "date" => "2014-05-23", "status" => "DRAFT" } }
 
 
   # This should return the minimal set of values that should be in the session
