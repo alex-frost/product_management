@@ -10,7 +10,10 @@ gem 'rails-api'
 gem 'pg'
 
 
-
+group :development, :test do
+  gem 'byebug'
+  gem 'rspec-rails'
+end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
