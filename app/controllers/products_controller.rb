@@ -48,6 +48,8 @@ class ProductsController < ApplicationController
     head :no_content
   end
 
+  private
+
   def product_params
     params.require(:product).permit(:name, :net_price)
   end
