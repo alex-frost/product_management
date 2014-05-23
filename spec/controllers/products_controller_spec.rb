@@ -61,9 +61,9 @@ describe ProductsController do
         assigns(:product).should be_persisted
       end
 
-      it "redirects to the created product" do
+      it "has status created" do
         post :create, {:product => valid_attributes}, valid_session
-        response.should redirect_to(Product.last)
+        expect(response.status).to eq(201)
       end
     end
 
@@ -75,11 +75,11 @@ describe ProductsController do
         assigns(:product).should be_a_new(Product)
       end
 
-      it "re-renders the 'new' template" do
+      it "has status unprocessable_entity" do
         # Trigger the behavior that occurs when invalid params are submitted
         Product.any_instance.stub(:save).and_return(false)
         post :create, {:product => { "name" => "invalid value" }}, valid_session
-        response.should render_template("new")
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -102,10 +102,10 @@ describe ProductsController do
         assigns(:product).should eq(product)
       end
 
-      it "redirects to the product" do
+      it "has status 204" do
         product = Product.create! valid_attributes
         put :update, {:id => product.to_param, :product => valid_attributes}, valid_session
-        response.should redirect_to(product)
+        expect(response.status).to eq(204)
       end
     end
 
@@ -118,12 +118,12 @@ describe ProductsController do
         assigns(:product).should eq(product)
       end
 
-      it "re-renders the 'edit' template" do
+      it "has status unprocessable_entity" do
         product = Product.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Product.any_instance.stub(:save).and_return(false)
         put :update, {:id => product.to_param, :product => { "name" => "invalid value" }}, valid_session
-        response.should render_template("edit")
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -136,10 +136,10 @@ describe ProductsController do
       }.to change(Product, :count).by(-1)
     end
 
-    it "redirects to the products list" do
+    it "has status 204" do
       product = Product.create! valid_attributes
       delete :destroy, {:id => product.to_param}, valid_session
-      response.should redirect_to(products_url)
+      expect(response.status).to eq(204)
     end
   end
 
