@@ -25,6 +25,7 @@ describe OrdersController do
   # adjust the attributes here as well.
   let(:valid_attributes) { { "date" => "2014-05-23" } }
 
+
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # OrdersController. Be sure to keep this updated too.
@@ -46,21 +47,6 @@ describe OrdersController do
     end
   end
 
-  describe "GET new" do
-    it "assigns a new order as @order" do
-      get :new, {}, valid_session
-      assigns(:order).should be_a_new(Order)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested order as @order" do
-      order = Order.create! valid_attributes
-      get :edit, {:id => order.to_param}, valid_session
-      assigns(:order).should eq(order)
-    end
-  end
-
   describe "POST create" do
     describe "with valid params" do
       it "creates a new Order" do
@@ -75,9 +61,9 @@ describe OrdersController do
         assigns(:order).should be_persisted
       end
 
-      it "redirects to the created order" do
+      it "has status created" do
         post :create, {:order => valid_attributes}, valid_session
-        response.should redirect_to(Order.last)
+        expect(response.status).to eq(201)
       end
     end
 
@@ -89,11 +75,11 @@ describe OrdersController do
         assigns(:order).should be_a_new(Order)
       end
 
-      it "re-renders the 'new' template" do
+      it "has status unprocessable_entity" do
         # Trigger the behavior that occurs when invalid params are submitted
         Order.any_instance.stub(:save).and_return(false)
-        post :create, {:order => { "date" => "invalid value" }}, valid_session
-        response.should render_template("new")
+        post :create, {:order => { "name" => "invalid value" }}, valid_session
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -116,10 +102,10 @@ describe OrdersController do
         assigns(:order).should eq(order)
       end
 
-      it "redirects to the order" do
+      it "has status 204" do
         order = Order.create! valid_attributes
         put :update, {:id => order.to_param, :order => valid_attributes}, valid_session
-        response.should redirect_to(order)
+        expect(response.status).to eq(204)
       end
     end
 
@@ -132,12 +118,12 @@ describe OrdersController do
         assigns(:order).should eq(order)
       end
 
-      it "re-renders the 'edit' template" do
+      it "has status unprocessable_entity" do
         order = Order.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Order.any_instance.stub(:save).and_return(false)
-        put :update, {:id => order.to_param, :order => { "date" => "invalid value" }}, valid_session
-        response.should render_template("edit")
+        put :update, {:id => order.to_param, :order => { "name" => "invalid value" }}, valid_session
+        expect(response.status).to eq(422)
       end
     end
   end
@@ -150,10 +136,10 @@ describe OrdersController do
       }.to change(Order, :count).by(-1)
     end
 
-    it "redirects to the orders list" do
+    it "has status 204" do
       order = Order.create! valid_attributes
       delete :destroy, {:id => order.to_param}, valid_session
-      response.should redirect_to(orders_url)
+      expect(response.status).to eq(204)
     end
   end
 
