@@ -23,7 +23,8 @@ describe ProductsController do
   # This should return the minimal set of attributes required to create a valid
   # Product. As you add validations to Product, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { { "name" => "MyString" } }
+  let(:valid_attributes)      { { "name" => "New Product", "net_price" => 1.23 } }
+  let(:more_valid_attributes) { { "name" => "Another Product", "net_price" => "1.53" } }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -42,21 +43,6 @@ describe ProductsController do
     it "assigns the requested product as @product" do
       product = Product.create! valid_attributes
       get :show, {:id => product.to_param}, valid_session
-      assigns(:product).should eq(product)
-    end
-  end
-
-  describe "GET new" do
-    it "assigns a new product as @product" do
-      get :new, {}, valid_session
-      assigns(:product).should be_a_new(Product)
-    end
-  end
-
-  describe "GET edit" do
-    it "assigns the requested product as @product" do
-      product = Product.create! valid_attributes
-      get :edit, {:id => product.to_param}, valid_session
       assigns(:product).should eq(product)
     end
   end
@@ -106,8 +92,8 @@ describe ProductsController do
         # specifies that the Product created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Product.any_instance.should_receive(:update).with({ "name" => "MyString" })
-        put :update, {:id => product.to_param, :product => { "name" => "MyString" }}, valid_session
+        Product.any_instance.should_receive(:update).with( more_valid_attributes )
+        put :update, {:id => product.to_param, :product => more_valid_attributes}, valid_session
       end
 
       it "assigns the requested product as @product" do
