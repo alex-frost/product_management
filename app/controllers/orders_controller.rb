@@ -18,7 +18,7 @@ class OrdersController < ApplicationController
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(params[:order])
+    @order = Order.new(product_params)
 
     if @order.save
       render json: @order, status: :created, location: @order
@@ -32,7 +32,7 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find(params[:id])
 
-    if @order.update(params[:order])
+    if @order.update(product_params)
       head :no_content
     else
       render json: @order.errors, status: :unprocessable_entity
@@ -46,5 +46,11 @@ class OrdersController < ApplicationController
     @order.destroy
 
     head :no_content
+  end
+
+  private
+
+  def product_params
+    params.require(:order).permit(:date, :vat, :status)
   end
 end
