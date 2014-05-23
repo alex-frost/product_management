@@ -13,6 +13,7 @@ gem 'pg'
 group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
 end
 
 # To use ActiveModel has_secure_password
