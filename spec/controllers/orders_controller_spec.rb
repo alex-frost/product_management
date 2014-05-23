@@ -128,19 +128,4 @@ describe OrdersController do
     end
   end
 
-  describe "DELETE destroy" do
-    it "destroys the requested order" do
-      order = Order.create! valid_attributes
-      expect {
-        delete :destroy, {:id => order.to_param}, valid_session
-      }.to change(Order, :count).by(-1)
-    end
-
-    it "has status 204" do
-      order = Order.create! valid_attributes
-      delete :destroy, {:id => order.to_param}, valid_session
-      expect(response.status).to eq(204)
-    end
-  end
-
 end

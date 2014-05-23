@@ -18,10 +18,5 @@ describe OrdersController do
     it "routes to #update" do
       put("/orders/1").should route_to("orders#update", :id => "1")
     end
-
-    it "routes to #destroy" do
-      delete("/orders/1").should route_to("orders#destroy", :id => "1")
-    end
-
   end
 end
