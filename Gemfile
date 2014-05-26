@@ -9,6 +9,7 @@ gem 'rails-api'
 # Use postgresql as the database for Active Record
 gem 'pg'
 
+gem 'acts_as_singleton'
 
 group :development, :test do
   gem 'byebug'
