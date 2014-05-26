@@ -20,21 +20,21 @@ require 'spec_helper'
 
 describe LineItemsController do
 
-  let(:order) { FactoryGirl.create :order }
   # This should return the minimal set of attributes required to create a valid
   # LineItem. As you add validations to LineItem, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { {order_id: order.id, quantity: 2} }
+  let(:valid_attributes) { (FactoryGirl.attributes_for :line_item).with_indifferent_access }
 
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # LineItemsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
+  let!(:line_item) { FactoryGirl.create :line_item}
+  let(:order) { line_item.order }
 
   describe "GET index" do
     it "assigns all line_items as @line_items" do
-      line_item = LineItem.create! valid_attributes
       get :index, {order_id: order.to_param}, valid_session
       assigns(:line_items).should eq([line_item])
     end
@@ -42,7 +42,6 @@ describe LineItemsController do
 
   describe "GET show" do
     it "assigns the requested line_item as @line_item" do
-      line_item = LineItem.create! valid_attributes
       get :show, {:id => line_item.to_param, order_id: order.to_param}, valid_session
       assigns(:line_item).should eq(line_item)
     end
@@ -96,23 +95,20 @@ describe LineItemsController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested line_item" do
-        line_item = LineItem.create! valid_attributes
         # Assuming there are no other line_items in the database, this
         # specifies that the LineItem created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        LineItem.any_instance.should_receive(:update).with({ "quantity" => "" })
-        put :update, {:id => line_item.to_param, :line_item => { "quantity" => "" }, order_id: order.to_param}, valid_session
+        LineItem.any_instance.should_receive(:update).with( valid_attributes)
+        put :update, {:id => line_item.to_param, :line_item => valid_attributes, order_id: order.to_param}, valid_session
       end
 
       it "assigns the requested line_item as @line_item" do
-        line_item = LineItem.create! valid_attributes
         put :update, {:id => line_item.to_param, :line_item => valid_attributes, order_id: order.to_param}, valid_session
         assigns(:line_item).should eq(line_item)
       end
 
       it "has status 204" do
-        line_item = LineItem.create! valid_attributes
         put :update, {:id => line_item.to_param, :line_item => valid_attributes, order_id: order.to_param}, valid_session
         expect(response.status).to eq(204)
       end
@@ -120,7 +116,6 @@ describe LineItemsController do
 
     describe "with invalid params" do
       it "assigns the line_item as @line_item" do
-        line_item = LineItem.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         LineItem.any_instance.stub(:save).and_return(false)
         put :update, {:id => line_item.to_param, :line_item => { "quantity" => "invalid value" }, order_id: order.to_param}, valid_session
@@ -128,7 +123,6 @@ describe LineItemsController do
       end
 
       it "has status unprocessable_entity" do
-        line_item = LineItem.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         LineItem.any_instance.stub(:save).and_return(false)
         put :update, {:id => line_item.to_param, :line_item => { "name" => "invalid value" }, order_id: order.to_param}, valid_session
@@ -139,14 +133,12 @@ describe LineItemsController do
 
   describe "DELETE destroy" do
     it "destroys the requested line_item" do
-      line_item = LineItem.create! valid_attributes
       expect {
         delete :destroy, {:id => line_item.to_param, order_id: order.to_param}, valid_session
       }.to change(LineItem, :count).by(-1)
     end
 
     it "has status 204" do
-      line_item = LineItem.create! valid_attributes
       delete :destroy, {:id => line_item.to_param, order_id: order.to_param}, valid_session
       expect(response.status).to eq(204)
     end

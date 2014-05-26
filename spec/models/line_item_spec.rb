@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe LineItem do
-  let(:order) { FactoryGirl.create :order}
-  subject {order.line_items.new}
+  subject! { FactoryGirl.create :line_item }
 
   it { should validate_numericality_of(:quantity).is_greater_than(0) }
 
@@ -10,9 +9,6 @@ describe LineItem do
   it { should belong_to(:order) }
 
   describe 'validates order_status_is_draft' do
-    let(:product) { Product.create! ({ "name" => "New Product", "net_price" => 1.23 }) }
-
-    subject! {order.line_items.create! ({"product_id" => product.to_param, "quantity" => 3}) }
 
     context "when order is DRAFT" do
       it "can be updated" do
@@ -22,7 +18,7 @@ describe LineItem do
 
     context "when order is PLACED" do
       before :each do
-        order.update(status: 'PLACED')
+        subject.order.update(status: 'PLACED')
       end
 
       it 'cannot be updated' do

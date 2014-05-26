@@ -23,8 +23,7 @@ describe ProductsController do
   # This should return the minimal set of attributes required to create a valid
   # Product. As you add validations to Product, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes)      { { "name" => "New Product", "net_price" => 1.23 } }
-  let(:more_valid_attributes) { { "name" => "Another Product", "net_price" => "1.53" } }
+  let(:valid_attributes)      { (FactoryGirl.attributes_for :product).with_indifferent_access }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
@@ -99,8 +98,8 @@ describe ProductsController do
         # specifies that the Product created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        Product.any_instance.should_receive(:update).with( more_valid_attributes )
-        put :update, {:id => product.to_param, :product => more_valid_attributes}, valid_session
+        Product.any_instance.should_receive(:update).with( valid_attributes.with_indifferent_access )
+        put :update, {:id => product.to_param, :product => valid_attributes}, valid_session
       end
 
       it "assigns the requested product as @product" do
