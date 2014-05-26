@@ -18,4 +18,14 @@ class Order < ActiveRecord::Base
     super
   end
 
+  def net_price
+    line_items.inject(0) do |sum, line_item|
+      sum += line_item.quantity * line_item.product.net_price
+    end
+  end
+
+  def gross_price
+    net_price*(1.0 + vat)
+  end
+
 end
