@@ -17,12 +17,13 @@ class Order < ActiveRecord::Base
     super
   end
 
-  def update(attributes = nil, options = {})
-    check_status(attributes)
+  def update(attributes = nil)
+    super
   end
 
   def change_status_valid?(new_status)
-    if status == "DRAFT"
+    case status
+    when "DRAFT"
       case new_status
       when "CANCELLED"
         true
@@ -31,6 +32,20 @@ class Order < ActiveRecord::Base
       else
         false
       end
+    when "PLACED"
+      case new_status
+      when "CANCELLED"
+        true
+      when "PAID"
+        true
+      else
+        false
+      end
+    when "PAID"
+      false # just to be explicit
+    when "CANCELLED"
+      false
     end
   end
+
 end
