@@ -11,6 +11,8 @@ gem 'pg'
 
 gem 'acts_as_singleton'
 
+gem "active_model_serializers"
+
 group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
