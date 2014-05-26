@@ -1,4 +1,6 @@
 ProductManagement::Application.routes.draw do
+  resource :vat, only: [:update, :show]
+
   resources :orders, except: [:new, :edit, :destroy] do
     resources :line_items, except: [:new, :edit]
   end
