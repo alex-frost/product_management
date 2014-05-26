@@ -155,7 +155,7 @@ describe ProductsController do
       let(:product) { product = Product.create! valid_attributes }
 
       before :each do
-        order = Order.create! ( {"date" => "2014-05-23", "status" => "DRAFT"} )
+        order = FactoryGirl.create :order
         order.line_items.create! ( { "quantity" => 1, "product_id" => product.to_param } )
       end
 

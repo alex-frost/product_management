@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe LineItem do
-  let(:order) { Order.create! ({ "date" => "2014-05-23"}) }
+  let(:order) { FactoryGirl.create :order}
   subject {order.line_items.new}
 
   it { should validate_numericality_of(:quantity).is_greater_than(0) }

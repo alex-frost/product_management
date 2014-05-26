@@ -20,7 +20,7 @@ require 'spec_helper'
 
 describe LineItemsController do
 
-  let(:order) { Order.create! ({ "date" => "2014-05-23", "status" => "DRAFT" }) }
+  let(:order) { FactoryGirl.create :order }
   # This should return the minimal set of attributes required to create a valid
   # LineItem. As you add validations to LineItem, be sure to
   # adjust the attributes here as well.
