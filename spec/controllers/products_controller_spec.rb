@@ -29,10 +29,10 @@ describe ProductsController do
   # in order to pass any filters (e.g. authentication) defined in
   # ProductsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
+  let!(:product) { FactoryGirl.create :product}
 
   describe "GET index" do
     it "assigns all products as @products" do
-      product = Product.create! valid_attributes
       get :index, {}, valid_session
       assigns(:products).should eq([product])
     end
@@ -40,7 +40,6 @@ describe ProductsController do
 
   describe "GET show" do
     it "assigns the requested product as @product" do
-      product = Product.create! valid_attributes
       get :show, {:id => product.to_param}, valid_session
       assigns(:product).should eq(product)
     end
@@ -93,7 +92,6 @@ describe ProductsController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested product" do
-        product = Product.create! valid_attributes
         # Assuming there are no other products in the database, this
         # specifies that the Product created on the previous line
         # receives the :update_attributes message with whatever params are
@@ -103,13 +101,11 @@ describe ProductsController do
       end
 
       it "assigns the requested product as @product" do
-        product = Product.create! valid_attributes
         put :update, {:id => product.to_param, :product => valid_attributes}, valid_session
         assigns(:product).should eq(product)
       end
 
       it "has status 204" do
-        product = Product.create! valid_attributes
         put :update, {:id => product.to_param, :product => valid_attributes}, valid_session
         expect(response.status).to eq(204)
       end
@@ -117,7 +113,6 @@ describe ProductsController do
 
     describe "with invalid params" do
       it "assigns the product as @product" do
-        product = Product.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Product.any_instance.stub(:save).and_return(false)
         put :update, {:id => product.to_param, :product => { "name" => "invalid value" }}, valid_session
@@ -125,7 +120,6 @@ describe ProductsController do
       end
 
       it "has status unprocessable_entity" do
-        product = Product.create! valid_attributes
         # Trigger the behavior that occurs when invalid params are submitted
         Product.any_instance.stub(:save).and_return(false)
         put :update, {:id => product.to_param, :product => { "name" => "invalid value" }}, valid_session
@@ -137,22 +131,18 @@ describe ProductsController do
   describe "DELETE destroy" do
     context "when no referenced in an order" do
       it "destroys the requested product" do
-        product = Product.create! valid_attributes
         expect {
           delete :destroy, {:id => product.to_param}, valid_session
         }.to change(Product, :count).by(-1)
       end
 
       it "has status 204" do
-        product = Product.create! valid_attributes
         delete :destroy, {:id => product.to_param}, valid_session
         expect(response.status).to eq(204)
       end
     end
 
     context "when referenced in an order" do
-      let(:product) { product = Product.create! valid_attributes }
-
       before :each do
         order = FactoryGirl.create :order
         order.line_items.create! ( { "quantity" => 1, "product_id" => product.to_param } )
