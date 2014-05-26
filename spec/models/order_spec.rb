@@ -29,21 +29,12 @@ describe Order do
 
       its(:vat) { should eq(0.2) }
     end
-  end
 
+    context "overwrites any status to be DRAFT" do
+      let(:params) { {"date"=> (Date.current + 1.day), "status"=>"PAID"} }
 
-  describe "#changes_can_be_made?" do
-    let(:params) { {"date"=> (Date.current + 1.day)} }
-
-    subject {Order.create! params}
-
-    it "is true with DRAFT status" do
-        expect(subject.changes_can_be_made?).to eq(true)
-    end
-
-    it "is false if status not eq DRAFT" do
-      subject.update(status: "CANCELLED")
-      expect(subject.changes_can_be_made?).to eq(false)
+      its(:status) { should eq('DRAFT') }
     end
   end
+
 end

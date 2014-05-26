@@ -18,11 +18,4 @@ class Order < ActiveRecord::Base
     super
   end
 
-  def changes_can_be_made?
-    if status == "DRAFT"
-      true
-    else
-      false
-    end
-  end
 end
