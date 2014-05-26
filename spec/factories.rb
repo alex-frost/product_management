@@ -15,6 +15,7 @@ FactoryGirl.define do
     product {
       FactoryGirl.create(:product)
     }
+    order
   end
 
   trait :with_line_items do
@@ -22,4 +23,5 @@ FactoryGirl.define do
       FactoryGirl.create_list :line_item, 2, order: order
     end
   end
+
 end
