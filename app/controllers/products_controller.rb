@@ -43,9 +43,12 @@ class ProductsController < ApplicationController
   # DELETE /products/1.json
   def destroy
     @product = Product.find(params[:id])
-    @product.destroy
-
-    head :no_content
+    if @product.orders.any?
+      render json: "Product is referenced in an order, cannot be deleted", status: :forbidden
+    else
+      @product.destroy
+      head :no_content
+    end
   end
 
   private

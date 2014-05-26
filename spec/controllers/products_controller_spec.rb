@@ -136,17 +136,41 @@ describe ProductsController do
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested product" do
-      product = Product.create! valid_attributes
-      expect {
+    context "when no referenced in an order" do
+      it "destroys the requested product" do
+        product = Product.create! valid_attributes
+        expect {
+          delete :destroy, {:id => product.to_param}, valid_session
+        }.to change(Product, :count).by(-1)
+      end
+
+      it "has status 204" do
+        product = Product.create! valid_attributes
         delete :destroy, {:id => product.to_param}, valid_session
-      }.to change(Product, :count).by(-1)
+        expect(response.status).to eq(204)
+      end
     end
 
-    it "has status 204" do
-      product = Product.create! valid_attributes
-      delete :destroy, {:id => product.to_param}, valid_session
-      expect(response.status).to eq(204)
+    context "when referenced in an order" do
+      let(:product) { product = Product.create! valid_attributes }
+
+      before :each do
+        order = Order.create! ( {"date" => "2014-05-23", "status" => "DRAFT"} )
+        order.line_items.create! ( { "quantity" => 1, "product_id" => product.to_param } )
+      end
+
+      it "does not destroy product" do
+        expect {
+          delete :destroy, {:id => product.to_param}, valid_session
+        }.to change(Product, :count).by(0)
+      end
+
+      it "has error message" do
+        delete :destroy, {:id => product.to_param}, valid_session
+        expect(response.status).to eq(403)
+        expect(response.body).to eq("Product is referenced in an order, cannot be deleted")
+      end
+
     end
   end
 
