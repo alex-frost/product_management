@@ -7,6 +7,9 @@ class StatusValidator < ActiveModel::EachValidator
       return
     end
 
+    if order.status == new_status
+      return
+    end
 
     case order.status
     when "DRAFT"

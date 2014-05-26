@@ -15,6 +15,10 @@ describe StatusValidator do
       it "cannot be PAID" do
         expect(subject.update(status: "PAID")).to be_false
       end
+
+      it "can remain as DRAFT" do
+        expect(subject.update(status: "DRAFT")).to be_true
+      end
     end
 
     context "with line items" do
@@ -55,6 +59,10 @@ describe StatusValidator do
     it "can be PAID" do
       expect(subject.update(status: "PAID")).to be_true
     end
+
+    it "can remain as PLACED" do
+      expect(subject.update(status: "PLACED")).to be_true
+    end
   end
 
   context "with status PAID" do
@@ -67,6 +75,10 @@ describe StatusValidator do
 
     it "cannot be changed" do
       expect(subject.update(status: "PLACED")).to be_false
+    end
+
+    it "can remain as PAID" do
+      expect(subject.update(status: "PAID")).to be_true
     end
   end
 
