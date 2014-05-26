@@ -56,15 +56,23 @@ describe LineItemsController do
         }.to change(LineItem, :count).by(1)
       end
 
-      it "assigns a newly created line_item as @line_item" do
-        post :create, {:line_item => valid_attributes, order_id: order.to_param}, valid_session
-        assigns(:line_item).should be_a(LineItem)
-        assigns(:line_item).should be_persisted
-      end
+      describe "simple POST" do
+        before :each do
+          post :create, {:line_item => valid_attributes, order_id: order.to_param}, valid_session
+        end
 
-      it "has status created" do
-        post :create, {:line_item => valid_attributes, order_id: order.to_param}, valid_session
-        expect(response.status).to eq(201)
+        it "assigns a newly created line_item as @line_item" do
+          assigns(:line_item).should be_a(LineItem)
+          assigns(:line_item).should be_persisted
+        end
+
+        it "has status created" do
+          expect(response.status).to eq(201)
+        end
+
+        it "has location" do
+          expect(response.location).to include(order.to_param)
+        end
       end
     end
 

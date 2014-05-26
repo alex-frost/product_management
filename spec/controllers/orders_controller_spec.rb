@@ -55,15 +55,23 @@ describe OrdersController do
         }.to change(Order, :count).by(1)
       end
 
-      it "assigns a newly created order as @order" do
-        post :create, {:order => valid_attributes}, valid_session
-        assigns(:order).should be_a(Order)
-        assigns(:order).should be_persisted
-      end
+      describe "simple POST" do
+        before :each do
+          post :create, {:order => valid_attributes}, valid_session
+        end
 
-      it "has status created" do
-        post :create, {:order => valid_attributes}, valid_session
-        expect(response.status).to eq(201)
+        it "assigns a newly created order as @order" do
+          assigns(:order).should be_a(Order)
+          assigns(:order).should be_persisted
+        end
+
+        it "has status created" do
+          expect(response.status).to eq(201)
+        end
+
+        it "has location" do
+          expect(response.location).to include('order')
+        end
       end
     end
 

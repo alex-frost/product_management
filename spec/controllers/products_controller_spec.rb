@@ -55,15 +55,22 @@ describe ProductsController do
         }.to change(Product, :count).by(1)
       end
 
-      it "assigns a newly created product as @product" do
-        post :create, {:product => valid_attributes}, valid_session
-        assigns(:product).should be_a(Product)
-        assigns(:product).should be_persisted
-      end
+      describe "simple POST" do
+        before :each do
+          post :create, {:product => valid_attributes}, valid_session
+        end
 
-      it "has status created" do
-        post :create, {:product => valid_attributes}, valid_session
-        expect(response.status).to eq(201)
+        it "assigns a newly created product as @product" do
+          assigns(:product).should be_a(Product)
+          assigns(:product).should be_persisted
+        end
+
+        it "has status created" do
+          expect(response.status).to eq(201)
+        end
+        it "has location" do
+          expect(response.location).to include('product')
+        end
       end
     end
 
