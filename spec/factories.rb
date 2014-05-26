@@ -3,7 +3,7 @@ FactoryGirl.define do
 
   factory :product do
     name { generate(:product_name) }
-    net_price 1.2
+    net_price "1.2"
   end
 
   factory :order do
@@ -11,10 +11,8 @@ FactoryGirl.define do
   end
 
   factory :line_item do
-    quantity 1
-    product {
-      FactoryGirl.create(:product)
-    }
+    quantity "1"
+    product
     order
   end
 
