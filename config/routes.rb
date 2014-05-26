@@ -1,7 +1,10 @@
 ProductManagement::Application.routes.draw do
-  resources :line_items, except: [:new, :edit]
-  resources :orders, except: [:new, :edit, :destroy]
+  resources :orders, except: [:new, :edit, :destroy] do
+    resources :line_items, except: [:new, :edit]
+  end
+
   resources :products, except: [:new, :edit]
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
