@@ -1,6 +1,7 @@
 class Order < ActiveRecord::Base
   validates :status, inclusion: { in: %w(DRAFT PLACED PAID CANCELLED),
                                   message: "%{value} is not a valid status. Must be DRAFT, PLACED, PAID, or CANCELLED" }
+  validates :date, on: :create, date: { after: Proc.new { Time.now } }
   validates :status, status: true
 
   has_many :line_items, inverse_of: :order
