@@ -35,6 +35,8 @@ GEM
       columnize (~> 0.8)
       debugger-linecache (~> 1.2)
     columnize (0.8.9)
+    date_validator (0.7.0)
+      activemodel (>= 3)
     debugger-linecache (1.2.0)
     diff-lcs (1.2.5)
     erubis (2.7.0)
@@ -111,6 +113,7 @@ DEPENDENCIES
   active_model_serializers
   acts_as_singleton
   byebug
+  date_validator
   factory_girl_rails
   pg
   rails (= 4.0.4)

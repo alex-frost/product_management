@@ -10,8 +10,8 @@ gem 'rails-api'
 gem 'pg'
 
 gem 'acts_as_singleton'
-
 gem "active_model_serializers"
+gem 'date_validator'
 
 group :development, :test do
   gem 'byebug'
