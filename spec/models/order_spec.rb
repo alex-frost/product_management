@@ -13,13 +13,13 @@ describe Order do
     subject {Order.new params}
 
     context "with no vat in params" do
-      let(:params) { {"date"=>"2014-05-23", "status"=>"DRAFT"} }
+      let(:params) { {"date"=> (Date.current + 1.day), "status"=>"DRAFT"} }
 
       its(:vat) { should eq(0.2) }
     end
 
     context "with vat in params" do
-      let(:params) { {"date"=>"2014-05-23", "status"=>"DRAFT", "vat" => "0.15"} }
+      let(:params) { {"date"=> (Date.current + 1.day), "status"=>"DRAFT", "vat" => "0.15"} }
 
       its(:vat) { should eq(0.15) }
     end
@@ -27,7 +27,23 @@ describe Order do
     context "with no params" do
       let(:params) { }
 
-      its(:vat) { should eq(nil) }
+      its(:vat) { should eq(0.2) }
     end
+  end
+
+  describe "#change_status_valid?" do
+    subject {Order.new params}
+    let(:params) { {"date"=> (Date.current + 1.day)} }
+
+    context "with no line items" do
+      it "cannot be PLACED" do
+        expect(subject.change_status_valid?("PLACED")).to eq(false)
+      end
+
+      it "can be CANCELLED" do
+        expect(subject.change_status_valid?("CANCELLED")).to eq(true)
+      end
+    end
+
   end
 end

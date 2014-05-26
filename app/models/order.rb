@@ -6,10 +6,31 @@ class Order < ActiveRecord::Base
   has_many :products, through: :line_items
 
   def self.new(attributes = nil, options = {})
-    if attributes && !(attributes.keys.include? "vat")
+
+    attributes ||= {}
+    if !(attributes.keys.include? "vat")
       attributes.merge!("vat" => Vat.instance.amount )
     end
 
+    attributes.merge!("status" => "DRAFT" )
+
     super
+  end
+
+  def update(attributes = nil, options = {})
+    check_status(attributes)
+  end
+
+  def change_status_valid?(new_status)
+    if status == "DRAFT"
+      case new_status
+      when "CANCELLED"
+        true
+      when "PLACED"
+        line_items.any?
+      else
+        false
+      end
+    end
   end
 end
