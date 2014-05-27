@@ -9,8 +9,8 @@ describe Order do
   it { should have_many(:line_items) }
   it { should have_many(:products).through(:line_items) }
 
-  describe "#self.new" do
-    subject {Order.new params}
+  describe "After create" do
+    subject {Order.create! params}
 
     context "with no vat in params" do
       let(:params) { {"date"=> (Date.current + 1.day), "status"=>"DRAFT"} }
@@ -22,12 +22,6 @@ describe Order do
       let(:params) { {"date"=> (Date.current + 1.day), "status"=>"DRAFT", "vat" => "0.15"} }
 
       its(:vat) { should eq(0.15) }
-    end
-
-    context "with no params" do
-      let(:params) { }
-
-      its(:vat) { should eq(0.2) }
     end
 
     context "overwrites any status to be DRAFT" do

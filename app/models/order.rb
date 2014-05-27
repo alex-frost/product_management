@@ -7,17 +7,8 @@ class Order < ActiveRecord::Base
   has_many :line_items, inverse_of: :order
   has_many :products, through: :line_items
 
-  def self.new(attributes = nil, options = {})
+  before_validation :add_default_vat, :overwrite_status_with_draft, on: :create
 
-    attributes ||= {}
-    if !(attributes.keys.include? "vat")
-      attributes.merge!("vat" => Vat.instance.amount )
-    end
-
-    attributes.merge!("status" => "DRAFT" )
-
-    super
-  end
 
   def net_price
     line_items.inject(0) do |sum, line_item|
@@ -27,6 +18,16 @@ class Order < ActiveRecord::Base
 
   def gross_price
     net_price*(1.0 + vat)
+  end
+
+  private
+
+  def overwrite_status_with_draft
+    update_attribute(:status, 'DRAFT')
+  end
+
+  def add_default_vat
+    update_attribute(:vat, 0.2) unless vat
   end
 
 end
