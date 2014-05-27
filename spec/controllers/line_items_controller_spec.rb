@@ -23,14 +23,14 @@ describe LineItemsController do
   # This should return the minimal set of attributes required to create a valid
   # LineItem. As you add validations to LineItem, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { (FactoryGirl.attributes_for :line_item).with_indifferent_access }
+  let(:valid_attributes) { (attributes_for :line_item).with_indifferent_access }
 
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # LineItemsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
-  let!(:line_item) { FactoryGirl.create :line_item}
+  let!(:line_item) { create :line_item}
   let(:order) { line_item.order }
 
   describe "GET index" do

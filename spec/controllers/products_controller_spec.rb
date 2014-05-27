@@ -23,13 +23,13 @@ describe ProductsController do
   # This should return the minimal set of attributes required to create a valid
   # Product. As you add validations to Product, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes)      { (FactoryGirl.attributes_for :product).with_indifferent_access }
+  let(:valid_attributes)      { (attributes_for :product).with_indifferent_access }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # ProductsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
-  let!(:product) { FactoryGirl.create :product}
+  let!(:product) { create :product}
 
   describe "GET index" do
     it "assigns all products as @products" do
@@ -144,7 +144,7 @@ describe ProductsController do
 
     context "when referenced in an order" do
       before :each do
-        order = FactoryGirl.create :order
+        order = create :order
         order.line_items.create! ( { "quantity" => 1, "product_id" => product.to_param } )
       end
 

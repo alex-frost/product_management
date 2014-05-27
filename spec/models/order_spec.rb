@@ -32,7 +32,7 @@ describe Order do
   end
 
   context 'with line items' do
-    subject { FactoryGirl.create :order, :with_line_items }
+    subject { create :order, :with_line_items }
 
     it "#net_price sums the products" do
       expect(subject.net_price).to eq(2.4)

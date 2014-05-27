@@ -1,6 +1,6 @@
 describe OrderSerializer do
   it "creates JSON with attributes" do
-    order  = FactoryGirl.create :order
+    order  = create :order
     serializer = OrderSerializer.new order
     expect(serializer.to_json).to eql('{"order":{"id":' + order.to_param +
                                       ',"status":"DRAFT","date":"' + order.date.strftime("%Y-%m-%d") +
