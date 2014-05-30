@@ -3,7 +3,7 @@ describe LineItemSerializer do
     line_item  = create :line_item
     serializer = LineItemSerializer.new line_item
     expect(serializer.to_json).to eql('{"line_item":{"id":' + line_item.to_param +
-                                      ',"quantity":1,"product_id":'+ line_item.product.to_param + 
-                                      '}}')
+                                      ',"quantity":1,"product_id":'+ line_item.product.to_param +
+                                      ',"product_name":"' + line_item.product.name + '"}}')
   end
 end

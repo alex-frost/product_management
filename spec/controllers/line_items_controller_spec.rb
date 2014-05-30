@@ -23,7 +23,8 @@ describe LineItemsController do
   # This should return the minimal set of attributes required to create a valid
   # LineItem. As you add validations to LineItem, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { ({product_id: "1"}.merge(attributes_for :line_item)).with_indifferent_access }
+  let(:valid_attributes) { ({product_id: product.to_param}.merge(attributes_for :line_item)).with_indifferent_access }
+  let(:product) { create :product }
 
 
   # This should return the minimal set of values that should be in the session
