@@ -7,6 +7,7 @@ describe LineItem do
 
   it { should belong_to(:product) }
   it { should belong_to(:order) }
+  it { should validate_presence_of(:product_id) }
 
   describe 'validates order_status_is_draft' do
 
